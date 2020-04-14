@@ -4,7 +4,7 @@ from sklearn.naive_bayes import MultinomialNB
 from joblib import load
 
 # user imports
-from shared import parse_features
+from parse import parse_features
 
 show_email = input('Would you like the input email to be shown (y/n)? ')
 show_email = True if show_email == 'y' else False

@@ -5,7 +5,7 @@ from sklearn.metrics import confusion_matrix
 from joblib import dump, load
 
 # user imports
-from shared import collate_directory, parse_features, count_frequency
+from parse import collate_directory, parse_features, count_frequency
 
 mode = int(input('Choose mode - Both(1)/Train(2)/Test(3): '))
 
