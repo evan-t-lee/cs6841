@@ -7,6 +7,24 @@ from joblib import dump, load
 
 MAX_KEYWORDS = 3000
 
+def collate_directory(directory):
+    return [os.path.join(directory, file) for file in os.listdir(directory)]
+
+def parse_features(files): 
+    word_freq = load('word_freq.joblib')
+    features_matrix = np.zeros((len(files), MAX_KEYWORDS))
+    for i in range(len(files)):
+        with open(files[i]) as file:
+            for j, line in enumerate(file):
+                if j < 2: # content starts from 3rd line
+                    continue
+                words = line.strip().split()
+                for word in words:
+                    for k, count in enumerate(word_freq):
+                        if count[0] == word:
+                            features_matrix[i, k] = words.count(word)
+    return features_matrix
+
 def count_frequency(directory, has_custom):
     emails = [os.path.join(directory,f) for f in os.listdir(directory)]    
     all_words = []       
@@ -26,19 +44,3 @@ def count_frequency(directory, has_custom):
     else:
         word_freq = Counter(all_words).most_common(MAX_KEYWORDS)
     dump(word_freq, 'word_freq.joblib')
-
-def parse_features(directory): 
-    word_freq = load('word_freq.joblib')
-    files = [os.path.join(directory, file) for file in os.listdir(directory)]
-    features_matrix = np.zeros((len(files), MAX_KEYWORDS))
-    for i in range(len(files)):
-        with open(files[i]) as file:
-            for j, line in enumerate(file):
-                if j < 2: # content starts from 3rd line
-                    continue
-                words = line.strip().split()
-                for word in words:
-                    for k, count in enumerate(word_freq):
-                        if count[0] == word:
-                            features_matrix[i, k] = words.count(word)
-    return features_matrix
