@@ -19,13 +19,12 @@ if mode % 3:
         text_prompt += ' with custom keywords'
     print(text_prompt + '...')
 
-    count_frequency('training_dataset', has_custom)
+    count_frequency(collate_directory('training_dataset'), has_custom)
 
     # label legit emails (hardcoded)
     training_outcomes = np.zeros(704)
     # label phishing emails (hardcoded)
     training_outcomes[353:703] = 1
-
 
     training_features = parse_features(collate_directory('training_dataset'))
 
