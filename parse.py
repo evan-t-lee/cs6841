@@ -11,7 +11,7 @@ def collate_directory(directory):
     return [os.path.join(directory, filename) for filename in os.listdir(directory)]
 
 def normalise_words(line):
-    return re.sub(r'[^a-zA-Z ]+', '', line.lower().strip())
+    return re.sub(r'[^a-zA-Z ]+', '', line.strip())
 
 def count_frequency(files, has_custom):
     words = []
