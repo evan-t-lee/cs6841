@@ -1,5 +1,4 @@
 # library imports
-import numpy as np
 from sklearn.naive_bayes import MultinomialNB
 from joblib import load
 
@@ -11,7 +10,7 @@ show_email = True if show_email == 'y' else False
 
 nb_model = load('nb_model.joblib')
 
-input_matrix = parse_features(['in.txt'])
+input_features = parse_features(['in.txt'])
 input_result = nb_model.predict(input_matrix)
 
 if show_email:

@@ -10,6 +10,9 @@ MAX_WORDS = 3000
 def collate_directory(directory):
     return [os.path.join(directory, filename) for filename in os.listdir(directory)]
 
+def determine_outcomes(directory):
+    return [1 if filename.startswith('sp') else 0 for filename in os.listdir(directory)]
+
 def normalise_words(line):
     return re.sub(r'[^a-zA-Z ]+', '', line.strip())
 
@@ -28,7 +31,7 @@ def count_frequency(files, has_custom):
 
 def parse_features(files):
     word_freq = load('word_freq.joblib')
-    features_matrix = zeros((len(files), MAX_WORDS))
+    features = zeros((len(files), MAX_WORDS))
     for i, filename in enumerate(files):
         with open(filename) as text:
             for j, line in enumerate(text):
@@ -38,5 +41,5 @@ def parse_features(files):
                 for word in words:
                     for k, word_count in enumerate(word_freq):
                         if word_count[0] == word:
-                            features_matrix[i, k] = words.count(word)
-    return features_matrix
+                            features[i, k] = words.count(word)
+    return features

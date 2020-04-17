@@ -1,11 +1,10 @@
 # library imports
-import numpy as np
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import confusion_matrix
 from joblib import dump, load
 
 # user imports
-from parse import collate_directory, parse_features, count_frequency
+from parse import collate_directory, determine_outcomes, parse_features, count_frequency
 
 mode = int(input('Choose mode - Both(1)/Train(2)/Test(3): '))
 
@@ -21,10 +20,8 @@ if mode % 3:
 
     count_frequency(collate_directory('training_dataset'), has_custom)
 
-    # label legit emails (hardcoded)
-    training_outcomes = np.zeros(704)
-    # label phishing emails (hardcoded)
-    training_outcomes[353:703] = 1
+    # identify legit/phishing emails
+    training_outcomes = determine_outcomes('training_dataset')
 
     training_features = parse_features(collate_directory('training_dataset'))
 
@@ -43,10 +40,8 @@ if mode % 2:
 
     testing_features = parse_features(collate_directory('testing_dataset'))
 
-    # label legit emails (hardcoded)
-    testing_outcomes = np.zeros(260)
-    # label phishing emails (hardcoded)
-    testing_outcomes[130:260] = 1
+    # identify legit/phishing emails
+    testing_outcomes = determine_outcomes('testing_dataset')
 
     result = nb_model.predict(testing_features)
     result_features = confusion_matrix(testing_outcomes, result)
